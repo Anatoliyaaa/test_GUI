@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Microservice Interface</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        form { margin-bottom: 20px; }
+        label { display: block; margin-top: 10px; }
+        input[type="text"], select {
+            padding: 6px;
+            width: 300px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 8px 12px;
+        }
+        .response, .status {
+            margin-top: 20px;
+            padding: 10px;
+            background: #f2f2f2;
+            border: 1px solid #ccc;
+            width: fit-content;
+        }
+        pre {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Microservice Control Panel</h1>
+
+    <form method="POST">
+        <label for="service">Select Service:</label>
+        <select name="service" id="service" required>
+            <option value="order">Order</option>
+            <option value="payment">Payment</option>
+            <option value="notification">Notification</option>
+        </select>
+
+        <label for="order_id">Order ID:</label>
+        <input type="text" name="order_id" id="order_id" required>
+
+        <button type="submit">Send</button>
+    </form>
+
+    {% if response %}
+        <div class="response">
+            <strong>Last Submission Response:</strong>
+            <pre>{{ response | tojson(indent=2) }}</pre>
+        </div>
+    {% endif %}
+
+    <div class="status">
+        <strong>Queue Status:</strong>
+        <div id="queue-status">Loading...</div>
+    </div>
+
+    <script>
+        function updateStatus() {
+            fetch('/status')
+                .then(response => response.json())
+                .then(data => {
+                    let html = `<p>Queue Size: ${data.queue_size}</p>`;
+                    html += "<h4>Recent Processed:</h4><ul>";
+                    if (data.processed) {
+                        data.processed.forEach(item => {
+                            html += `<li><pre>${JSON.stringify(item, null, 2)}</pre></li>`;
+                        });
+                    } else {
+                        html += "<li>No processed requests yet.</li>";
+                    }
+                    html += "</ul>";
+                    document.getElementById("queue-status").innerHTML = html;
+                })
+                .catch(err => {
+                    document.getElementById("queue-status").innerHTML = "Error loading status.";
+                });
+        }
+
+        // обновляем каждые 2 секунды
+        setInterval(updateStatus, 15000);
+        updateStatus(); // первая загрузка сразу
+    </script>
+</body>
+</html>
