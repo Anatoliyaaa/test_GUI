@@ -21,11 +21,14 @@ jobs:
         with:
           python-version: '3.8'
 
-      - name: Install Node.js and htmlhint
+      - name: Install Node.js using nvm
         run: |
-          curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-          sudo apt-get install -y nodejs
-          npm install -g htmlhint
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            nvm install 14
+            npm install -g htmlhint
+  
       
       - name: Check HTML
         run: htmlhint index.html
