@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Используем Ubuntu для CI
 
     steps:
       - name: Check out repository
@@ -21,23 +21,19 @@ jobs:
         with:
           python-version: '3.8'
 
-      - name: Install Node.js using nvm
-        run: |
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            nvm install 14
-            npm install -g htmlhint
-  
-      
-      - name: Check HTML
-        run: htmlhint index.html
-  
-
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+
+      - name: Install Node.js
+        run: |
+          curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+          sudo apt-get install -y nodejs
+          
+      - name: Install htmlhint
+        run: |
+          sudo npm install -g htmlhint
 
       - name: Lint code
         run: |
@@ -50,6 +46,4 @@ jobs:
           pytest
 
       - name: Check HTML
-        run: |
-          pip install htmlhint
-          htmlhint index.html
+        run: htmlhint index.html  # Запуск htmlhint
