@@ -4,35 +4,35 @@ from unittest.mock import MagicMock
 # Заглушки для приложения Flask (мы не будем запускать реальные сервисы)
 @pytest.fixture(scope='module')
 def frontend_app():
-    """ Заглушка для фронтенд приложения """
+    """  для фронтенд приложения """
     app = MagicMock()
     app.config['TESTING'] = True
     yield app
 
 @pytest.fixture(scope='module')
 def esb_app():
-    """ Заглушка для ESB сервиса """
+    """  для ESB сервиса """
     app = MagicMock()
     app.config['TESTING'] = True
     yield app
 
 @pytest.fixture(scope='module')
 def notification_app():
-    """ Заглушка для Notification сервиса """
+    """  для Notification сервиса """
     app = MagicMock()
     app.config['TESTING'] = True
     yield app
 
 @pytest.fixture(scope='module')
 def payment_app():
-    """ Заглушка для Payment сервиса """
+    """ для Payment сервиса """
     app = MagicMock()
     app.config['TESTING'] = True
     yield app
 
 @pytest.fixture(scope='module')
 def client():
-    """ Заглушка для тестового клиента фронтенда """
+    """для тестового клиента фронтенда """
     mock_client = MagicMock()
     mock_client.get.return_value.status_code = 200
     mock_client.get.return_value.data = b'Microservice Control Panel'
@@ -40,7 +40,6 @@ def client():
 
 @pytest.fixture(scope='module')
 def esb_client():
-    """ Заглушка для тестового клиента ESB """
     mock_client = MagicMock()
 
     # Настройка POST
@@ -60,7 +59,6 @@ def esb_client():
 
 @pytest.fixture(scope='module')
 def notification_client():
-    """ Заглушка для тестового клиента Notification """
     mock_client = MagicMock()
     mock_client.post.return_value.status_code = 200
     mock_client.post.return_value.data = b'Notification sent for order'
@@ -68,7 +66,6 @@ def notification_client():
 
 @pytest.fixture(scope='module')
 def payment_client():
-    """ Заглушка для тестового клиента Payment """
     mock_client = MagicMock()
     mock_client.post.return_value.status_code = 200
     mock_client.post.return_value.data = b'Payment for order processed'
