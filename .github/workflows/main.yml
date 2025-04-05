@@ -25,7 +25,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install --upgrade setuptools wheel
-          pip install -r requirements.txt  # Убедись, что все зависимости актуальны
+          pip install -r microservices_v3/requirements.txt  # Убедись, что все зависимости актуальны
 
       - name: Install Node.js
         run: |
