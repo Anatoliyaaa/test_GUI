@@ -42,9 +42,21 @@ def client():
 def esb_client():
     """ Заглушка для тестового клиента ESB """
     mock_client = MagicMock()
-    mock_client.post.return_value.status_code = 202
-    mock_client.post.return_value.data = b'Request added to queue'
+
+    # Настройка POST
+    mock_post_response = MagicMock()
+    mock_post_response.status_code = 202
+    mock_post_response.data = b'Request added to queue'
+    mock_client.post.return_value = mock_post_response
+
+    # Настройка GET
+    mock_get_response = MagicMock()
+    mock_get_response.status_code = 200
+    mock_get_response.data = b'queue_size'
+    mock_client.get.return_value = mock_get_response
+
     yield mock_client
+
 
 @pytest.fixture(scope='module')
 def notification_client():
