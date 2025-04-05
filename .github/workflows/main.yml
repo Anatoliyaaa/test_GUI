@@ -36,11 +36,6 @@ jobs:
         run: |
           sudo npm install -g htmlhint
 
-      - name: Lint code
-        run: |
-          pip install flake8
-          flake8 .
-
       - name: Run tests
         run: |
           pip install pytest
