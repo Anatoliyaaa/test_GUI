@@ -40,6 +40,12 @@ jobs:
         run: |
           pip install pytest
           pytest
-
+          
+      - name: Save test report
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: reports/test-report.xml
+        
       - name: Check HTML
         run: htmlhint index.html
